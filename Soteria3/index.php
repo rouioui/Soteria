@@ -22,6 +22,9 @@ if($url == ''){
 }else if($url[0] == 'home'){
     if(count($url) > 1){header("Location: ../{$url[0]}"); return;}
     homePage();
+}else if($url[0] == 'articles'){
+    if(count($url) > 1){header("Location: ../{$url[0]}"); return;}
+    ArticlesPage();
 }else if($url[0] == 'campaign'){
     if(!isset($_GET['campaign_id'])){header("Location: campaigns"); return;}
     if(count($url) > 1){header("Location: ../{$url[0]}"); return;}

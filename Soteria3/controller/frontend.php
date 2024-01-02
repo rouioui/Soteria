@@ -66,7 +66,11 @@ function signUpPage(){
     sysSignup();
     require("view/signup.php");
 }
-
+function ArticlesPage(){
+    addView();
+    sysLogin();
+    require("view/articles.php");
+}
 function homePage(){
     addView();
     $categories = getAllCategories();

@@ -11,6 +11,7 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a href="home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="articles" class="nav-link">Articles</a></li>
                 <li class="nav-item m-0"><a href="campaigns" class="nav-link">Browse</a></li>
 
                 <?php if(!isset($_SESSION['user_id'])){ ?>
