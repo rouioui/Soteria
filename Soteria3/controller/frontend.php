@@ -22,6 +22,17 @@ function homePage(){
     $postes = getRecordsCampaigns(1, $recordsPerPage);
     require("view/home.php");
 }
+
+
+function ArticlesPage(){
+    addView();
+    $categories = getAllCategories();
+    //$postes = getAllCampaigns();
+    $recordsPerPage = 4;
+    $postes = getRecordsCampaigns(1, $recordsPerPage);
+    require("view/articles.php");
+}
+
 function campaignPage(){
     addView();
     $poste = getCampaign($_GET['campaign_id']);
