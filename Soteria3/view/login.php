@@ -10,7 +10,7 @@ ob_start();
                 <div class="heading-section p-5">
                     <span class="subheading">Welcome to Soteria</span>
                     <h2 class="mb-4">Create Your Account</h2>
-                    <p>Already have an account? <a class="text-secondary" href="signup"><u>Log in</u></a></p>
+                    <p>You dont have account? <a class="text-secondary" href="signup"><u>Create Now !!</u></a></p>
                 </div>
             </div>
         </div>
@@ -23,6 +23,7 @@ ob_start();
 
 
             <form action="" method="POST" class="appointment">
+                
                 <?php
                     if(isset($_GET['error'])){
                 ?>
@@ -32,9 +33,9 @@ ob_start();
                 <?php
                     }
                 ?>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
+                <div class="row align-items-center">
+                    <div class="col-md-12 flex-column justify-content-center">
+                        <div class="form-group ">
                             <label for="name">Email</label>
                             <div class="input-wrap">
                                 <div class="icon"><i class="fa-solid fa-envelope"></i></div>

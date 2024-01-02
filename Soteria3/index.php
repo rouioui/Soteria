@@ -1,4 +1,5 @@
 <?php
+define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
 session_start();
 require('controller/frontend.php');
 
@@ -21,9 +22,6 @@ if($url == ''){
 }else if($url[0] == 'home'){
     if(count($url) > 1){header("Location: ../{$url[0]}"); return;}
     homePage();
-}else if($url[0] == 'articles'){
-    if(count($url) > 1){header("Location: ../{$url[0]}"); return;}
-    ArticlesPage();
 }else if($url[0] == 'campaign'){
     if(!isset($_GET['campaign_id'])){header("Location: campaigns"); return;}
     if(count($url) > 1){header("Location: ../{$url[0]}"); return;}
@@ -43,9 +41,23 @@ if($url == ''){
     if(isset($_SESSION['user_id'])){header("Location: home"); return;}
     if(count($url) > 1){header("Location: ../{$url[0]}"); return;}
     signUpPage();
+}else if($url[0] == 'panel'){
+    if(!isset($_SESSION['user_id'])){header("Location: login"); return;}
+    if($_SESSION['rank'] == 0){
+        if(count($url) >= 2 ){header("Location: ../home");return;}
+        if(count($url) < 2){header("Location: home");return;}
+    }
+    if(count($url) > 2){header("Location: ../../{$url[0]}"); return;}
+    if(isset($url[1])){
+        if($url[1] == "membres"){panelMembresPage(); return;}
+        if($url[1] == "paiement"){panelPaiementPage(); return;}
+    }
+    panelPage();
 }else if($url[0] == 'signout'){
     session_destroy();
     header("Location: home");
-}else{
-    header("Location: home");
+}
+
+else{
+    header("Location: 404");
 }

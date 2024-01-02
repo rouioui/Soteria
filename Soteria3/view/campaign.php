@@ -109,11 +109,55 @@ ob_start();
                                             <p class="m-0 font-weight-bold">Organizer</p>
                                         </div>
                                     </div>
-                                    <p class="mt-3"><a class="btn btn-secondary btn-outline-secondary href="">Contact</a></p>
+                                
+                                    <p style="font-size: 14px;" class="mt-5 text-secondary font-weight-bold"> you can send message here : </p>
+                                    <p class="mt-3"><div class="form-group ">
+                                    <form action="" method="POST" >
+                                    
+                            <div class="input-wrap">
+                                <input type="text" name="message" class="form-control" placeholder="send a message">
+                            </div> 
+                            <?= (!isset($_SESSION['user_id'])) ? "<p class='text-danger '>Vous devez être connecter pour ajouter un message !</p>" : "" ?>
+                            <p class="mt-3"> <input type="submit" name="sendMessage" value="Send"<?= (!isset($_SESSION['user_id'])) ? 'disabled="disabled"' : "" ?> class="btn btn-secondary btn-outline-secondary  "></p>
+                            
+                                    </form>
+                        </div>
+                    </p>
+
+                                   
+                                    
                                    
                                 </div>
+                                <div class="col-6 col-md-6 border-right">
+
+                                
+                                <p class="font-weight-bold m-0" style="font-size: 14px;">Top Comments : </p>
+                                    <?php if(count($comments) != 0 ){
+                                    ?>
+                                    <?php foreach($comments as $Comment){ ?>
+                                            <div class="d-flex mt-5" style="gap: 5px;">
+                                                <div class="profile-pic">
+                                                    <img src="<?= $Comment['avatar'] ?>" class="img-responsive" width="40" height="40"
+                                                        alt="">
+                                                </div>
+                                                <div class="content">
+                                                    <p class="m-0 text-dark" style="font-size: 14px;">
+                                                        <?= $Comment['first_name']  . " " . $Comment['last_name']?>
+                                                    </p>
+                                                    <p class="m-0 font-weight-bold"><?= $Comment['comment_text'] ?> </p>
+                                                </div>
+                                            </div>
+                                    <?php } ?>
+                                    <?php } ?>
+                                    <hr>
+                                </div>
+                        
+                        
+                                
                             </div>
                         </div>
+                    
+                        
                     </div>
 
                     <hr>

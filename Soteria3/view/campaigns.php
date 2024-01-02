@@ -16,7 +16,7 @@ ob_start();
             </div>
             <div class="row">
 				<?php
-					$max_length = 50; 
+					$max_length = 40; 
 					foreach($postes as $poste){
 						$percentage = floor(($poste['current_amount'] / $poste['goal_amount']) * 100);
 				?>
@@ -81,7 +81,7 @@ ob_start();
             </div>
             <div class="row">
 				<?php
-					$max_length = 50; 
+					$max_length = 40; 
 					if($postesOfCategory->rowCount() != 0){
 					foreach($postesOfCategory as $poste){
 						$percentage = floor(($poste['current_amount'] / $poste['goal_amount']) * 100);
@@ -163,7 +163,7 @@ ob_start();
             </div>
             <div class="row">
 				<?php
-					$max_length = 50; 
+					$max_length = 40; 
 					if($postesOfCategory->rowCount() != 0){
 					foreach($postesOfCategory as $poste){
 						$percentage = ($poste['current_amount'] / $poste['goal_amount']) * 100;

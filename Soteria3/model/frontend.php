@@ -8,7 +8,7 @@
 */
 function dbConnect(){
     try{
-        $db = new PDO("mysql:host=localhost;dbname=soteria","root","");
+        $db = new PDO("mysql:host=localhost;dbname=soteria;charset=utf8","root","");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $db;
     }catch(PDOEcxeption $e){
@@ -37,7 +37,87 @@ function addView(){
         setcookie("viewed","ok",time()+365*24*3600);
     }
 }
+/* 
+    function getViews(){
+        return @object;
+    }
+*/
+function getViews(){
+    $db = dbConnect();
+    $req = $db->prepare("SELECT view FROM views");
+    $req->execute();
+    return $req->fetch();
+}
+function getNumUsers(){
+    $db = dbConnect();
+    $req = $db->prepare("SELECT COUNT(*) AS total FROM users");
+    $req->execute();
+    return $req->fetch();
+}
+function getNumDonations(){
+    $db = dbConnect();
+    $req = $db->prepare("SELECT COUNT(*) AS total FROM donations");
+    $req->execute();
+    return $req->fetch();
+}
+function getNumMoney(){
+    $db = dbConnect();
+    $req = $db->prepare("SELECT SUM(amount) AS total FROM donations");
+    $req->execute();
+    return $req->fetch();
+}
+// ######################################### PARTIE GLOBALE #########################################
+/* 
+    ---- cette function fais le traitement du formulaire de l'authentification
+    function getAllUsers(){
+        return @void;
+    }
+*/
 
+function getRecordsUsers($pageNumber, $recordsPerPage) {
+    $db = dbConnect();
+
+    $offset = ($pageNumber - 1) * $recordsPerPage;
+    // Fetch records from the database using LIMIT and OFFSET
+    $query = "SELECT * FROM users LIMIT $recordsPerPage OFFSET $offset";
+    // Execute the query and return the result
+    $req = $db->prepare($query);
+    $req->execute();
+
+    return $req;
+}
+function userRank() {
+    $db = dbConnect();
+    if(isset($_POST['ok'])){
+        $rank = $_POST['rank'];
+        $id = $_POST['idUser'];
+
+        $req = $db->prepare("UPDATE users SET rank=? WHERE user_id = ?");
+        $req->execute(array($rank,$id));
+        header("Location: ./membres");
+    }
+}
+
+function getRecordsPaiement($pageNumber, $recordsPerPage) {
+    $db = dbConnect();
+
+    $offset = ($pageNumber - 1) * $recordsPerPage;
+    // Fetch records from the database using LIMIT and OFFSET
+    $query = "SELECT c.title,c.campaign_id,u.avatar,u.first_name,u.last_name,d.amount FROM users u INNER JOIN donations d on d.user_id=u.user_id INNER JOIN campaigns c on c.campaign_id=d.campaign_id LIMIT $recordsPerPage OFFSET $offset";
+    // Execute the query and return the result
+    $req = $db->prepare($query);
+    $req->execute();
+
+    return $req;
+}
+function getNumPaiement() {
+    $db = dbConnect();
+
+    $query = "SELECT count(*) as total FROM users u INNER JOIN donations d on d.user_id=u.user_id INNER JOIN campaigns c on c.campaign_id=d.campaign_id";
+    $req = $db->prepare($query);
+    $req->execute();
+    return $req->fetch();
+}
 // ######################################### PARTIE D'AUTHENTIFICATION (inscription / connection) #########################################
 
 /* 
@@ -68,7 +148,7 @@ function sysLogin(){
                 $_SESSION['rank']=$user['rank'];
                 header("Location: home");
             }else{
-                header("Location: login&error=Email+ou+mot+de+passe+incorrecte+!"); 
+                header("Location: login&error=Email+ou+mot+de+passe+incorrecte !"); 
             }
         }  
     }
@@ -86,7 +166,7 @@ function sysSignup(){
     if(isset($_POST['signup'])){
         // voir si les tous les champs sont remplient
         if(!isset($_POST['firstName']) || !isset($_POST['lastName']) || !isset($_POST['email']) || !isset($_POST['password']) || !isset($_POST['confirmedPassword']) || !isset($_POST['confirm'])){
-            header("Location: signup&error=Merci de remplir tous les champs et d'accepter les termes et conditions!");
+            header("Location: signup&error=Merci+de+remplir+tous+les+champs+et+d'accepter+les+termes+et+conditions!");
         }else{
             $date=date('Y-m-d H:i:s');
 
@@ -99,7 +179,7 @@ function sysSignup(){
 
             // crypter le mot de passe
             if($password === $confirmedPassword) $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-            else{header("Location: signup&error=Verifiez votre mot de passe!"); die();}
+            else{header("Location: signup&error=Verifiez+votre+mot+de+passe!"); die();}
 
             $req = $db->prepare("SELECT email FROM users WHERE email=?");
             $req->execute(array($email));
@@ -109,7 +189,7 @@ function sysSignup(){
                 $req->execute(array(null,$firstName,$lastName,$email,$hashed_password,0,$date,$date));
                 header("Location: login");
             }else{
-                header("Location: signup&error=Cette email est dejà utiliser !");
+                header("Location: signup&error=Cette+email+est+dejà+utiliser+!");
             }
         }
     }
@@ -289,7 +369,16 @@ function getCampaignOfCategorie($id){
         return @array;
     }
 */
+function getRecordsCampaignsPerCategorie($pageNumber, $recordsPerPage,$c) {
+    $db = dbConnect();
 
+    $offset = ($pageNumber - 1) * $recordsPerPage;
+    $query = "SELECT c.*,cc.category_name FROM campaigns c JOIN campaign_category_map ccm ON c.campaign_id = ccm.campaign_id JOIN campaign_categories cc ON ccm.category_id = cc.category_id WHERE cc.category_name = ? LIMIT $recordsPerPage OFFSET $offset";
+    $req = $db->prepare($query);
+    $req->execute(array($c));
+
+    return $req;
+}
 
 
 /*
@@ -312,14 +401,14 @@ function addCampaign(){
     if(isset($_POST['categorieSelect'])){
         if(isset($_POST['chks'])){
             if(count($_POST['chks']) < 1){
-                header("Location:create&error=Merci+de+choisir+au+moin+une+categorie!");
+                header("Location: create&error=Merci+de+choisir+au+moin+une+categorie!");
             }else{
                 $categories = $_POST['chks'];
                 $_SESSION['categories'] = $categories;
                 header("Location: create");
             }
         }else{
-            header("Location: create&error=create&error=Merci+de+choisir+au+moin+une+categorie!");
+            header("Location: create&error= Merci+de+choisir+au+moin+une+categorie!");
         }
     }
 
@@ -346,13 +435,13 @@ function addCampaign(){
                 // }
                 // Check file size
                 if ($_FILES["image"]["size"] > 5000000) {
-                    header("Location: ./create&error=La taille du fichier est trop grande !");
+                    header("Location: ./create&error=La+taille+du+fichier+est+trop+grande+!");
                     exit();
                 }
                     
                 // Allow certain file formats
                 if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-                    header("Location: ./create&error=Désole, que les fichiers d'extension avec JPG, JPEG, PNG et GIF qui sont autorisé!");
+                    header("Location: ./create&error=Désole,+que+les+fichiers+d'extension+avec+JPG,JPEG,PNG+et+GIF+qui+sont+autorisé!");
                     exit();
                 }
                     
@@ -368,10 +457,10 @@ function addCampaign(){
                     unset($_SESSION['categories']);
                     header("Location: home");
                 }else {
-                    echo "Sorry, there was an error uploading your file.";
+                    echo "Sorry,+there+was+an+error+uploading+your+file.";
                 }
             }else {
-                header("Location: ./create&error=Le fichier doit être une image !");
+                header("Location: ./create&error=Le+fichier+doit+être+une+image+!");
                 exit();
             }
         }
@@ -521,7 +610,7 @@ function addDonation(){
     if(isset($_POST['donate'])){
         // voir si les tous les champs sont remplient
         if(!isset($_POST['amount'])){
-            header("Location: donate&campaign_id={$_GET['campaign_id']}&error=Merci de choisir un montant!");
+            header("Location: donate&campaign_id={$_GET['campaign_id']}&error=Merci+de+choisir+un+montant!");
         }else{
             $date=date('Y-m-d H:i:s');
 
@@ -543,11 +632,41 @@ function addDonation(){
 
                 $req = $db->prepare("UPDATE campaigns SET current_amount = ? WHERE campaign_id = ?");
                 $req->execute(array($current_amount,$campaign));
-
             }
-            
-            header("Location: campaign&campaign_id={$_GET['campaign_id']}&success=votre+donation+effectué+par+succés");
-            exit();
+            header("Location: donate&campaign_id={$_GET['campaign_id']}&success=Votre+donation+a+été+reçu+avec+succès+!");
         }
     }
 }
+
+
+// ajouter un message 
+
+function addComment(){
+    $db = dbConnect();
+    if(isset($_POST['sendMessage']) && isset($_POST['message']) && !empty($_POST['message']) && isset($_SESSION['user_id'])){
+        $date=date('Y-m-d H:i:s');
+        $campaignId = $_GET['campaign_id'];
+        $commentText = $_POST['message'];
+        $UserId = $_SESSION['user_id'];
+        $req = $db->prepare("INSERT INTO comments VALUES (?,?,?,?,?,?)");
+        $req->execute(array(null,$UserId,$campaignId,$commentText,$date,$date));
+     
+    
+    // Redirect
+    header("Location: campaign&campaign_id={$_GET['campaign_id']}");
+  
+}}
+ function getAllComments($id){
+    $db = dbConnect();
+  $SQL = "SELECT c.comment_text,u.avatar,u.first_name,u.last_name 
+                    FROM comments c 
+                    JOIN users u 
+                    ON c.user_id = u.user_id 
+                    WHERE c.campaign_id = ?  
+                    ORDER BY c.date_created DESC 
+                    LIMIT 3 ";
+          $req = $db->prepare($SQL);
+          $req->execute(array($id));
+    return $req;
+          
+} 

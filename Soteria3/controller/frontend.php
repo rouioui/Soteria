@@ -1,6 +1,59 @@
 <?php
 
 require('model/frontend.php');
+// PARTIE ADMINISTRATION
+function panelPage(){
+    $url = $url = explode('/',$_GET['url']);
+    $users = getNumUsers();
+    $views = getViews();
+    $don = getNumDonations();
+    $money = getNumMoney();
+    $categories = getAllCategories();
+    require("view/panel/panel.php");
+}
+function panelMembresPage(){
+    $url = $url = explode('/',$_GET['url']);
+    // Get the current page number from the URL or any other source
+    $pageNumber = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    // Set the number of records per page
+    $recordsPerPage = 5;
+
+    // Get the records for the current page
+    $users = getRecordsUsers($pageNumber, $recordsPerPage);
+    
+    // Assuming you have the total number of records available
+    $x = getNumUsers();
+    $totalRecords = $x['total'];
+
+    // Calculate the total number of pages
+    $totalPages = ceil($totalRecords / $recordsPerPage);
+
+    userRank();
+
+    require("view/panel/membres.php");
+}
+function panelPaiementPage(){
+    $url = $url = explode('/',$_GET['url']);
+    // Get the current page number from the URL or any other source
+    $pageNumber = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    // Set the number of records per page
+    $recordsPerPage = 5;
+
+    // Get the records for the current page
+    $donations = getRecordsPaiement($pageNumber, $recordsPerPage);
+    
+    // Assuming you have the total number of records available
+    $x = getNumPaiement();
+    $totalRecords = $x['total'];
+
+    // Calculate the total number of pages
+    $totalPages = ceil($totalRecords / $recordsPerPage);
+
+    require("view/panel/paiements.php");
+}
+
 
 // PARTIE DES MEMBRES
 function loginPage(){
@@ -22,24 +75,18 @@ function homePage(){
     $postes = getRecordsCampaigns(1, $recordsPerPage);
     require("view/home.php");
 }
-
-
-function ArticlesPage(){
-    addView();
-    $categories = getAllCategories();
-    //$postes = getAllCampaigns();
-    $recordsPerPage = 4;
-    $postes = getRecordsCampaigns(1, $recordsPerPage);
-    require("view/articles.php");
-}
-
 function campaignPage(){
     addView();
+    
     $poste = getCampaign($_GET['campaign_id']);
     $nbDonation = numDonationsOfCampaign($_GET['campaign_id']);
     $nbDonation = $nbDonation->fetch();
     $donators = whoDonate($_GET['campaign_id']);
     $donators = $donators->fetchAll();
+    addComment();
+    $comments = getAllComments($_GET['campaign_id']);
+    $comments = $comments ->fetchAll();
+  
     require("view/campaign.php");
 }
 function campaignsPage(){

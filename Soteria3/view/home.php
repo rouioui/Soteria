@@ -14,7 +14,7 @@ ob_start();
             <div class="container">
                 <div class="row slider-text align-items-center">
                     <div class="mx-auto col-md-6 ftco-animate">
-                        <div class="text text-center w-100">
+                        <div class="text text-center ">
                             <h2>Help People in Need</h2>
                             <h1 class="mb-3">Provide Your Support.</h1>
                             <div class="mx-auto">
@@ -38,8 +38,8 @@ ob_start();
         <div class="row align-items-center">
             <div class="col-md-7 wrap-about py-5">
                 <div class="heading-section pr-md-5 pt-md-5">
-                    <span class="subheading">Welcome to My Donations</span>
-                    <h2 class="mb-4">Fundraising on My Donations Takes Only a Few Minutes</h2>
+                    <span class="subheading">Welcome to Soteria</span>
+                    <h2 class="mb-4">Fundraising on Soteria Takes Only a Few Minutes</h2>
                     <p>
                     <ol>
                         <li class="ota">
@@ -51,7 +51,8 @@ ob_start();
                         </li>
                         <p>We'll guide you with tips along the way.</p>
                         <li class="ota">
-                            <h6 class="text-secondary">Share with Friends and Family</h6>
+                            <h6 clas
+s="text-secondary">Share with Friends and Family</h6>
                         </li>
                         <p>People will help you.</p>
                     </ol>
@@ -99,21 +100,21 @@ ob_start();
 </section>
 
 <?php if($postes->rowCount() != 0) {?>
-<section class="ftco-section ftco-no-pb">
+<section class="ftco-section ">
     <div class="container">
-        <div class="row justify-content-center pb-5 mb-3">
-            <div class="col-md-7 heading-section text-center ftco-animate">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-10 heading-section text-center ftco-animate">
                 <span class="subheading">Top Fundraisers</span>
                 <h2>Fundraisers</h2>
             </div>
         </div>
         <div class="row">
             <?php
-                $max_length = 50; 
+                $max_length = 40   ; 
                 foreach($postes as $poste){
                     $percentage = floor(($poste['current_amount'] / $poste['goal_amount']) * 100);
             ?>
-            <div class="col-md-6 col-lg-3">
+            <div class=" col-md-3 ">
                 <div class="causes causes-2 ftco-animate">
                     <a href="campaign&campaign_id=<?= $poste['campaign_id'] ?>" class="img w-100" style="background-image: url(<?= $poste['image'] ?>);"></a>
                     <div class="text p-3" style="position:relative;">
@@ -139,7 +140,7 @@ ob_start();
 <section class="ftco-counter" id="section-counter">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 mb-5 mb-md-0 text-center text-md-left">
+            <div class=" text-center text-md-left">
                 <h2 class="font-weight-bold" style="color: #fff; font-size: 22px;">We're on a mission to help solve all your problems</h2>
                 <a href="create" class="btn btn-white btn-outline-white">Take Your First Step</a>
             </div>
