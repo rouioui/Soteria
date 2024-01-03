@@ -3,38 +3,24 @@ ob_start();
 ?>
 
 <?php include 'partials/_navbar.php' ?>
-<section class="hero-wrap">
-    <div class="home-slider owl-carousel">
-        <div class="slider-item" style="background-image:url(public/img/home/bg_1.jpg);">
-            <div class="overlay-1"></div>
-            <div class="overlay-2"></div>
-            <div class="overlay-3"></div>
-            <div class="overlay-4"></div>
-            <div class="container">
-                <div class="row slider-text align-items-center ">
-                    <div class="mx-auto col-md-6 ftco-animate">
-                        <div class="text text-center w-100">
-                            <h2>Help People in Need</h2>
-                            <h1 class="mb-3">Provide Your Support.</h1>
-                            <div class="mx-auto">
-                                <div>
-                                    <p class="mb-0">
-                                        <a href="create" class="btn btn-secondary py-3 px-2 px-md-4">Start</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary navSearch" style="position:relative; ">
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-10 heading-section text-center ftco-animate" style="height:100px;background-color:white">
+
             </div>
         </div>
-    </div>
-</section>
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-10 heading-section text-center ftco-animate">
+                <span class="subheading">News Articles</span>
+                <h2>These are articles about everything.  But if you really care about helping people, you can research that</h2>
+            </div>
+        </div>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary navSearch" style="position:relative; background-image: url('../public/img/home/moroccan-flower-dark.png');">
                 <div class="container mr-5">
                     <div class="collapse navbar-collapse" id="ftco-nav" >
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="display:none">
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="#genral" id="genral">Genral</a>
                             </li>
@@ -60,9 +46,9 @@ ob_start();
             </nav>
 <div  style=" align-items:center">
     <div style="display:none"  class="row m-3 text-center" id="newsType"></div>
-    <div style="justify-content: center; gap:15px ;background-image: url('../public/img/home/moroccan-flower-dark.png');" class="row me-2 ms-2  " id="newsdetails"></div>
+    <div style="justify-content: center; gap:15px ;" class="row me-2 ms-2  " id="newsdetails"></div>
 </div>
-<script src="../public/js/news.js"></script>
+<script src="public/js/news.js"></script>
 <?php include 'partials/_footer.php' ?>
 
 <?php $content=ob_get_clean();?>

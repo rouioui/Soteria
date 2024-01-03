@@ -1,4 +1,4 @@
-<?php $title = "Panel - MyDonations";
+<?php $title = "Panel - Soteria";
 ob_start();
 ?>
 

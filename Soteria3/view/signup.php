@@ -15,7 +15,7 @@ ob_start();
         </div>
         <div class="donation-wrap d-md-flex flex-column justify-content-center col-md-7">
             <div class="d-sm-none text-center text-white heading-section pt-5">
-                <span class="subheading text-white">Welcome to MyDonations</span>
+                <span class="subheading text-white">Welcome to Soteria</span>
                 <h2 class="mb-4">Create Your Account</h2>
                 <p>Already have an account? <a class="text-secondary" href="login"><u>Log in</u></a></p>
             </div>
